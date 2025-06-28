@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本处理和分析工具</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 左侧导航栏 -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-file-text"></i> 文本工具</h2>
+            </div>
+            
+            <div class="nav-section">
+                <h3>文本处理</h3>
+                <ul class="nav-list">
+                    <li class="nav-item active" data-function="input">
+                        <i class="fas fa-edit"></i> 文本输入
+                    </li>
+                    <li class="nav-item" data-function="search-replace">
+                        <i class="fas fa-search"></i> 查找替换
+                    </li>
+                    <li class="nav-item" data-function="word-freq">
+                        <i class="fas fa-chart-bar"></i> 词频统计
+                    </li>
+                    <li class="nav-item" data-function="summary">
+                        <i class="fas fa-compress-alt"></i> 文本摘要
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <h3>文本分析</h3>
+                <ul class="nav-list">
+                    <li class="nav-item" data-function="entity-recognition">
+                        <i class="fas fa-user-tag"></i> 实体识别
+                    </li>
+                    <li class="nav-item" data-function="sentiment-analysis">
+                        <i class="fas fa-smile"></i> 情感分析
+                    </li>
+                    <li class="nav-item" data-function="syntax-analysis">
+                        <i class="fas fa-project-diagram"></i> 句法分析
+                    </li>
+                    <li class="nav-item" data-function="enhanced-rewrite">
+                        <i class="fas fa-edit"></i> 智能改写
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <h3>其他功能</h3>
+                <ul class="nav-list">
+                    <li class="nav-item" data-function="export">
+                        <i class="fas fa-download"></i> 导出结果
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- 主内容区域 -->
+        <main class="main-content">
+            <!-- 顶部工具栏 -->
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <button class="btn btn-primary" id="upload-btn">
+                        <i class="fas fa-upload"></i> 上传文件
+                    </button>
+                    <input type="file" id="file-input" accept=".txt" style="display: none;">
+                    
+                    <button class="btn btn-secondary" id="clear-btn">
+                        <i class="fas fa-trash"></i> 清空
+                    </button>
+                    
+                    <button class="btn btn-secondary" id="reset-btn">
+                        <i class="fas fa-undo"></i> 重置
+                    </button>
+                </div>
+                
+                <div class="toolbar-right">
+                    <span class="text-info" id="text-stats">字符数: 0 | 词数: 0</span>
+                </div>
+            </div>
+
+            <!-- 内容区域 -->
+            <div class="content-area">
+                <!-- 文本输入区域 -->
+                <div class="content-panel" id="input-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-edit"></i> 文本输入</h3>
+                        <p>请输入或上传要处理的文本内容</p>
+                    </div>
+
+                    <div class="input-area">
+                        <div class="input-container">
+                            <textarea id="input-text" placeholder="请在此输入文本内容，或点击上传文件按钮导入txt文件..."></textarea>
+
+                            <!-- 文段处理工具面板 -->
+                            <div class="text-processing-panel">
+                                <div class="panel-toggle">
+                                    <button class="toggle-btn" id="processing-toggle-btn">
+                                        <i class="fas fa-tools"></i>
+                                        <span>文段处理工具</span>
+                                        <i class="fas fa-chevron-down toggle-icon"></i>
+                                    </button>
+                                </div>
+
+                                <div class="processing-options hidden" id="processing-options">
+                                    <div class="options-grid">
+                                        <div class="option-group">
+                                            <h4>空白处理</h4>
+                                            <label class="option-item">
+                                                <input type="checkbox" id="trim-lines">
+                                                <span class="checkmark"></span>
+                                                <span class="option-text">去除首尾空格</span>
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="checkbox" id="remove-empty-lines">
+                                                <span class="checkmark"></span>
+                                                <span class="option-text">移除空行</span>
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="checkbox" id="merge-empty-lines">
+                                                <span class="checkmark"></span>
+                                                <span class="option-text">合并多余空行</span>
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="checkbox" id="remove-extra-spaces">
+                                                <span class="checkmark"></span>
+                                                <span class="option-text">移除多余空格</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="option-group">
+                                            <h4>格式处理</h4>
+                                            <label class="option-item">
+                                                <input type="checkbox" id="normalize-newlines">
+                                                <span class="checkmark"></span>
+                                                <span class="option-text">统一换行符</span>
+                                            </label>
+                                            <div class="option-item">
+                                                <label for="case-transform">大小写转换:</label>
+                                                <select id="case-transform">
+                                                    <option value="">不转换</option>
+                                                    <option value="upper">全部大写</option>
+                                                    <option value="lower">全部小写</option>
+                                                    <option value="title">首字母大写</option>
+                                                    <option value="sentence">句首大写</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="processing-actions">
+                                        <button class="btn btn-primary" id="apply-processing-btn">
+                                            <i class="fas fa-magic"></i> 应用处理
+                                        </button>
+                                        <button class="btn btn-secondary" id="preview-processing-btn">
+                                            <i class="fas fa-eye"></i> 预览效果
+                                        </button>
+                                        <button class="btn btn-secondary" id="clear-options-btn">
+                                            <i class="fas fa-times"></i> 清除选项
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="input-actions">
+                                <div class="action-buttons">
+                                    <button class="action-btn" id="quick-search-btn" title="快速查找">
+                                        <i class="fas fa-search"></i>
+                                        <span>查找替换</span>
+                                    </button>
+                                    <button class="action-btn" id="quick-freq-btn" title="词频分析">
+                                        <i class="fas fa-chart-bar"></i>
+                                        <span>词频统计</span>
+                                    </button>
+                                    <button class="action-btn" id="quick-summary-btn" title="生成摘要">
+                                        <i class="fas fa-compress-alt"></i>
+                                        <span>文本摘要</span>
+                                    </button>
+                                    <button class="action-btn" id="quick-stats-btn" title="文本统计">
+                                        <i class="fas fa-calculator"></i>
+                                        <span>文本统计</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 查找替换面板 -->
+                <div class="content-panel hidden" id="search-replace-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-search"></i> 查找替换</h3>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>查找内容:</label>
+                        <input type="text" id="search-input" placeholder="输入要查找的文本">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>替换为:</label>
+                        <input type="text" id="replace-input" placeholder="输入替换文本">
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="regex-mode"> 使用正则表达式
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="case-sensitive"> 区分大小写
+                        </label>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn btn-primary" id="find-btn">查找</button>
+                        <button class="btn btn-success" id="replace-btn">替换</button>
+                        <button class="btn btn-warning" id="replace-all-btn">全部替换</button>
+                    </div>
+                </div>
+
+                <!-- 词频统计面板 -->
+                <div class="content-panel hidden" id="word-freq-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-chart-bar"></i> 词频统计</h3>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>显示词数:</label>
+                        <input type="number" id="word-count" value="20" min="1" max="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label>最小词长:</label>
+                        <select id="min-word-length">
+                            <option value="1">不限制</option>
+                            <option value="2" selected>2个字符以上</option>
+                            <option value="3">3个字符以上</option>
+                            <option value="4">4个字符以上</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>分词方法:</label>
+                        <select id="segmentation-method">
+                            <option value="auto">自动选择</option>
+                            <option value="jieba">jieba分词</option>
+                            <option value="pkuseg_default">pkuseg通用</option>
+                            <option value="pkuseg_news">pkuseg新闻</option>
+                            <option value="pkuseg_web">pkuseg网络</option>
+                            <option value="pkuseg_medicine">pkuseg医药</option>
+                            <option value="pkuseg_tourism">pkuseg旅游</option>
+                            <option value="thulac">thulac分词</option>
+                            <option value="basic">基础分词</option>
+                        </select>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="ignore-case" checked> 忽略大小写
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="exclude-punctuation" checked> 排除标点符号
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="exclude-stopwords" checked> 排除停用词
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="exclude-numbers" checked> 排除纯数字
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="exclude-single-chars" checked> 排除单字符
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>停用词管理:</label>
+                        <div class="stopwords-controls">
+                            <button class="btn btn-sm btn-secondary" id="manage-stopwords-btn">
+                                <i class="fas fa-cog"></i> 管理停用词
+                            </button>
+                            <button class="btn btn-sm btn-info" id="quick-add-stopwords-btn">
+                                <i class="fas fa-plus"></i> 快速添加
+                            </button>
+                            <span class="stopwords-count" id="stopwords-count">自定义停用词: 0个</span>
+                        </div>
+                        <div class="quick-add-section hidden" id="quick-add-section">
+                            <div class="input-group">
+                                <input type="text" id="quick-stopwords-input" placeholder="快速添加停用词，支持多种分隔符">
+                                <button class="btn btn-sm btn-primary" id="quick-add-btn">添加</button>
+                            </div>
+                            <div class="quick-add-help">
+                                <small>提示：可以直接从右侧词频结果中点击词汇快速添加为停用词</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" id="analyze-freq-btn">分析词频</button>
+                    </div>
+                </div>
+
+                <!-- 文本摘要面板 -->
+                <div class="content-panel hidden" id="summary-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-compress-alt"></i> 文本摘要</h3>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>摘要句数:</label>
+                        <input type="number" id="sentence-count" value="3" min="1" max="10">
+                    </div>
+
+                    <div class="form-group">
+                        <label>摘要方法:</label>
+                        <select id="summary-method">
+                            <option value="hybrid">混合方法</option>
+                            <option value="frequency">基于词频</option>
+                            <option value="position">基于位置</option>
+                            <option value="textteaser">TextTeaser算法</option>
+                            <option value="qwen3">Qwen3大模型</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>文本标题 (TextTeaser和Qwen3推荐):</label>
+                        <input type="text" id="summary-title" placeholder="输入标题可提高摘要质量，特别是使用TextTeaser和Qwen3时">
+                        <small class="form-text text-muted">
+                            <i class="fas fa-info-circle"></i>
+                            标题有助于算法理解文本主题，生成更精准的摘要
+                        </small>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn btn-primary" id="generate-summary-btn">生成摘要</button>
+                    </div>
+                </div>
+
+                <!-- 实体识别面板 -->
+                <div class="content-panel hidden" id="entity-recognition-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-user-tag"></i> 实体识别</h3>
+                        <p>识别文本中的人名、地名、机构等实体</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>识别方法:</label>
+                        <select id="entity-method">
+                            <option value="hybrid">混合方法 (推荐)</option>
+                            <option value="spacy">spaCy模型</option>
+                            <option value="regex">正则表达式</option>
+                        </select>
+                        <small class="form-text text-muted">
+                            <i class="fas fa-info-circle"></i>
+                            混合方法结合了spaCy的智能识别和正则表达式的精确匹配
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-label">
+                            <input type="checkbox" id="entity-deduplicate" checked>
+                            <label for="entity-deduplicate">实体去重和统计</label>
+                        </div>
+                        <small class="form-text text-muted">
+                            <i class="fas fa-info-circle"></i>
+                            启用后将合并相同实体并统计出现次数，便于查看
+                        </small>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" id="extract-entities-btn">识别实体</button>
+                    </div>
+                </div>
+
+                <!-- 情感分析面板 -->
+                <div class="content-panel hidden" id="sentiment-analysis-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-smile"></i> 情感分析</h3>
+                        <p>分析文本的情感倾向</p>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" id="analyze-sentiment-btn">分析情感</button>
+                    </div>
+                </div>
+
+                <!-- 句法分析面板 -->
+                <div class="content-panel hidden" id="syntax-analysis-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-project-diagram"></i> 句法分析</h3>
+                        <p>分析文本的句法结构和依存关系</p>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" id="analyze-syntax-btn">分析句法</button>
+                    </div>
+                </div>
+
+                <!-- 智能改写面板 -->
+                <div class="content-panel hidden" id="enhanced-rewrite-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-edit"></i> 智能改写</h3>
+                        <p>使用高级算法对文本进行智能改写</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>改写风格:</label>
+                        <select id="rewrite-style">
+                            <option value="formal">正式风格</option>
+                            <option value="casual">轻松风格</option>
+                            <option value="academic">学术风格</option>
+                            <option value="creative">创意风格</option>
+                            <option value="concise">简洁风格</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>改写强度:</label>
+                        <select id="rewrite-intensity">
+                            <option value="light">轻度改写</option>
+                            <option value="medium">中度改写</option>
+                            <option value="heavy">重度改写</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="segment-mode" checked>
+                            启用分段改写（推荐长文本使用）
+                        </label>
+                        <small class="help-text">长文本分段处理可提高改写质量和稳定性</small>
+                    </div>
+
+                    <div class="form-group" id="segment-options">
+                        <label>每段最大字符数:</label>
+                        <select id="max-segment-length">
+                            <option value="500">500字符</option>
+                            <option value="800">800字符</option>
+                            <option value="1000" selected>1000字符</option>
+                            <option value="1500">1500字符</option>
+                            <option value="2000">2000字符</option>
+                        </select>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" id="generate-rewrite-btn">开始智能改写</button>
+                    </div>
+                </div>
+
+                <!-- 导出结果面板 -->
+                <div class="content-panel hidden" id="export-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-download"></i> 导出结果</h3>
+                        <p>将处理结果导出为不同格式的文件</p>
+                    </div>
+
+                    <div class="export-options">
+                        <div class="form-group">
+                            <label>导出格式:</label>
+                            <select id="export-format">
+                                <option value="txt">纯文本 (.txt)</option>
+                                <option value="json">JSON格式 (.json)</option>
+                                <option value="csv">CSV表格 (.csv)</option>
+                                <option value="html">HTML网页 (.html)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>导出内容:</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" id="export-original" checked> 原始文本</label>
+                                <label><input type="checkbox" id="export-results" checked> 处理结果</label>
+                                <label><input type="checkbox" id="export-stats"> 统计信息</label>
+                                <label><input type="checkbox" id="export-metadata"> 处理参数</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>文件名:</label>
+                            <input type="text" id="export-filename" placeholder="自动生成" value="">
+                            <small class="help-text">留空将自动生成文件名</small>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" id="export-file-btn">
+                            <i class="fas fa-download"></i> 导出文件
+                        </button>
+                        <button class="btn btn-secondary" id="preview-export-btn">
+                            <i class="fas fa-eye"></i> 预览内容
+                        </button>
+                    </div>
+
+                    <div class="export-preview hidden" id="export-preview">
+                        <h4>导出预览</h4>
+                        <div class="preview-content" id="preview-content"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 右侧结果区域 -->
+        <aside class="results-panel">
+            <div class="results-header">
+                <h3><i class="fas fa-list-alt"></i> 处理结果</h3>
+                <div class="results-actions">
+                    <button class="btn btn-sm btn-secondary" id="copy-result-btn">
+                        <i class="fas fa-copy"></i> 复制
+                    </button>
+                    <button class="btn btn-sm btn-secondary" id="download-result-btn">
+                        <i class="fas fa-download"></i> 下载
+                    </button>
+                </div>
+            </div>
+            
+            <div class="results-content">
+                <div id="results-area">
+                    <div class="placeholder">
+                        <i class="fas fa-info-circle"></i>
+                        <p>处理结果将在这里显示</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- 加载提示 -->
+    <div class="loading-overlay hidden" id="loading-overlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>处理中...</p>
+        </div>
+    </div>
+
+    <!-- 停用词管理侧边栏 -->
+    <div class="sidebar-overlay hidden" id="stopwords-sidebar">
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-filter"></i> 停用词管理</h3>
+                <button class="sidebar-close" id="stopwords-sidebar-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="sidebar-body">
+                <div class="stopwords-section">
+                    <h4>添加停用词</h4>
+                    <p class="help-text">输入要过滤的词汇，支持中英文逗号、分号、空格等分隔符</p>
+                    <div class="input-group">
+                        <input type="text" id="new-stopwords-input" placeholder="例如：的，了，在 是；有，和 就 不 也 都 这 那">
+                        <button class="btn btn-primary" id="add-stopwords-btn">添加</button>
+                    </div>
+                </div>
+
+                <div class="stopwords-section">
+                    <h4>当前自定义停用词 <span id="current-stopwords-count">(0个)</span></h4>
+                    <div class="stopwords-actions">
+                        <button class="btn btn-sm btn-secondary" id="refresh-stopwords-btn">
+                            <i class="fas fa-sync"></i> 刷新
+                        </button>
+                        <button class="btn btn-sm btn-danger" id="clear-all-stopwords-btn">
+                            <i class="fas fa-trash"></i> 清空全部
+                        </button>
+                    </div>
+                    <div class="current-stopwords-list" id="current-stopwords-list">
+                        <p class="no-stopwords">暂无自定义停用词</p>
+                    </div>
+                </div>
+
+                <div class="stopwords-section">
+                    <h4>使用说明</h4>
+                    <ul class="help-list">
+                        <li>点击右侧词频结果中的词汇可快速添加为停用词</li>
+                        <li>支持批量添加，用逗号、分号或空格分隔</li>
+                        <li>添加/移除停用词后，需要重新点击"分析词频"按钮查看效果</li>
+                        <li>可以随时移除不需要的停用词</li>
+                    </ul>
+                </div>
+
+                <div class="stopwords-section">
+                    <div class="analysis-reminder">
+                        <i class="fas fa-info-circle"></i>
+                        <p>修改停用词后，请返回词频统计面板，重新点击"分析词频"按钮查看更新后的结果。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

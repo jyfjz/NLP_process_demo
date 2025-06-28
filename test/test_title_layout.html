@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标题布局测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* 复制Web应用的样式 */
+        .result-item {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .result-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            flex-wrap: nowrap;
+            min-height: 24px;
+            line-height: 1.2;
+        }
+
+        .result-title i {
+            color: #667eea;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            width: 16px;
+            text-align: center;
+        }
+
+        .result-title span {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+        }
+
+        .result-content {
+            color: #495057;
+            line-height: 1.6;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .summary-text {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+            margin: 15px 0;
+        }
+
+        .method-note {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #e3f2fd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #1976d2;
+            border-left: 3px solid #2196f3;
+        }
+
+        .method-note i {
+            margin-right: 6px;
+        }
+
+        /* 测试不同宽度 */
+        .test-container {
+            margin-bottom: 30px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .test-header {
+            background: #007bff;
+            color: white;
+            padding: 10px 15px;
+            font-weight: bold;
+        }
+
+        .test-content {
+            padding: 15px;
+        }
+
+        .width-300 { max-width: 300px; }
+        .width-500 { max-width: 500px; }
+        .width-800 { max-width: 800px; }
+
+        /* 响应式测试 */
+        @media (max-width: 768px) {
+            .result-title {
+                font-size: 1rem;
+                gap: 6px;
+            }
+            
+            .result-title i {
+                font-size: 1rem;
+                width: 14px;
+            }
+            
+            .result-title span {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .result-title {
+                font-size: 0.9rem;
+                gap: 4px;
+            }
+            
+            .result-title i {
+                font-size: 0.9rem;
+                width: 12px;
+            }
+            
+            .result-title span {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 标题布局修复测试</h1>
+        
+        <div class="test-container width-800">
+            <div class="test-header">正常宽度 (800px) - 修复后效果</div>
+            <div class="test-content">
+                <div class="result-item">
+                    <div class="result-title">
+                        <i class="fas fa-file-alt"></i>
+                        <span>文本摘要 (Qwen3大模型)</span>
+                    </div>
+                    <div class="result-content">
+                        <div class="summary-text">
+                            这是一个测试摘要内容，用来验证标题是否能够正确在一行显示。
+                        </div>
+                        <div class="method-note">
+                            <i class="fas fa-robot"></i> 由Qwen3大模型生成
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-container width-500">
+            <div class="test-header">中等宽度 (500px) - 测试响应式</div>
+            <div class="test-content">
+                <div class="result-item">
+                    <div class="result-title">
+                        <i class="fas fa-file-alt"></i>
+                        <span>文本摘要 (Qwen3大模型)</span>
+                    </div>
+                    <div class="result-content">
+                        <div class="summary-text">
+                            测试中等宽度下的显示效果。
+                        </div>
+                        <div class="method-note">
+                            <i class="fas fa-robot"></i> 由Qwen3大模型生成
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-container width-300">
+            <div class="test-header">窄屏宽度 (300px) - 测试极限情况</div>
+            <div class="test-content">
+                <div class="result-item">
+                    <div class="result-title">
+                        <i class="fas fa-file-alt"></i>
+                        <span>文本摘要 (Qwen3大模型)</span>
+                    </div>
+                    <div class="result-content">
+                        <div class="summary-text">
+                            窄屏测试。
+                        </div>
+                        <div class="method-note">
+                            <i class="fas fa-robot"></i> 由Qwen3大模型生成
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-container">
+            <div class="test-header">其他功能标题测试</div>
+            <div class="test-content">
+                <div class="result-item">
+                    <div class="result-title">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>文本统计信息</span>
+                    </div>
+                    <div class="result-content">
+                        <p><strong>字符数:</strong> 1234</p>
+                        <p><strong>词数:</strong> 567</p>
+                    </div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-title">
+                        <i class="fas fa-brain"></i>
+                        <span>文本摘要 (TextTeaser算法)</span>
+                    </div>
+                    <div class="result-content">
+                        <div class="summary-text">
+                            TextTeaser算法生成的摘要内容。
+                        </div>
+                        <div class="method-note">
+                            <i class="fas fa-brain"></i> 使用TextTeaser算法
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #e8f5e8; border-radius: 8px;">
+            <h3>✅ 修复效果验证</h3>
+            <ul>
+                <li>✅ 图标和文字在同一行显示</li>
+                <li>✅ 使用flexbox布局确保对齐</li>
+                <li>✅ 响应式设计适配不同屏幕</li>
+                <li>✅ 文字过长时使用省略号</li>
+                <li>✅ 图标固定宽度，防止错位</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

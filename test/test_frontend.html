@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本处理工具 - 前端测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196f3;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 10px;
+            transition: transform 0.3s ease;
+        }
+        .button:hover {
+            transform: translateY(-2px);
+        }
+        .preview {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .preview img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 文本处理工具 - Web版本</h1>
+        
+        <div class="info">
+            <h3>✨ 功能特性</h3>
+            <ul>
+                <li><strong>现代化界面</strong>：美观的渐变设计和流畅动画</li>
+                <li><strong>智能操作</strong>：输入文本后可直接点击快速操作按钮</li>
+                <li><strong>实时反馈</strong>：即时显示处理结果</li>
+                <li><strong>响应式设计</strong>：适配各种屏幕尺寸</li>
+            </ul>
+        </div>
+
+        <div class="info">
+            <h3>🚀 快速开始</h3>
+            <p>1. 启动后端服务器：<code>python web_backend.py</code></p>
+            <p>2. 访问Web界面：<code>http://localhost:5000</code></p>
+            <p>3. 或者直接打开前端文件进行界面预览</p>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="../web_application/web_frontend/index.html" class="button">🎨 预览前端界面</a>
+            <a href="#" onclick="startBackend()" class="button">🚀 启动完整应用</a>
+        </div>
+
+        <div class="preview">
+            <h3>界面预览</h3>
+            <p>新的界面设计包含：</p>
+            <ul style="text-align: left; display: inline-block;">
+                <li>美观的文本输入区域</li>
+                <li>快速操作按钮（查找替换、词频统计、文本摘要、文本统计）</li>
+                <li>现代化的按钮和表单样式</li>
+                <li>优化的结果显示区域</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function startBackend() {
+            alert('请在命令行中运行：python web_backend.py\n然后访问 http://localhost:5000');
+        }
+    </script>
+</body>
+</html>
