@@ -1,0 +1,14 @@
+flask
+flask-cors
+spacy
+textblob
+vaderSentiment
+stanza
+transformers
+torch
+snownlp
+jieba
+pkuseg
+thulac
+requests
+psutil 
